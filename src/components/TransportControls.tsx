@@ -5,6 +5,7 @@ import { PlayIcon } from './icons/PlayIcon';
 import { PauseIcon } from './icons/PauseIcon';
 import { SkipBackIcon } from './icons/SkipBackIcon';
 import { SkipForwardIcon } from './icons/SkipForwardIcon';
+import { togglePlayback } from '@/hooks/useAudioPlayer';
 
 type Props = {
   onSkipBack: () => void;
@@ -14,7 +15,6 @@ type Props = {
 
 export function TransportControls({ onSkipBack, onSkipForward, size = 'sm' }: Props) {
   const isPlaying = usePlayerStore((s) => s.isPlaying);
-  const togglePlay = usePlayerStore((s) => s.togglePlay);
 
   const btnSize = size === 'lg' ? 'h-14 w-14' : 'h-10 w-10';
   const iconSize = size === 'lg' ? 'h-7 w-7' : 'h-5 w-5';
@@ -32,7 +32,7 @@ export function TransportControls({ onSkipBack, onSkipForward, size = 'sm' }: Pr
       </button>
 
       <button
-        onClick={togglePlay}
+        onClick={togglePlayback}
         className={`${btnSize} flex items-center justify-center rounded-full bg-accent text-white transition-colors hover:bg-accent-hover`}
         aria-label={isPlaying ? 'Pause' : 'Play'}
       >

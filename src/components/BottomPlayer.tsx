@@ -14,9 +14,11 @@ export function BottomPlayer() {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-30">
-        <MiniPlayer onSeek={seek} onSkipBack={skipBackward} onSkipForward={skipForward} />
-      </div>
+      {!isFullScreen && (
+        <div className="fixed bottom-0 left-0 right-0 z-30">
+          <MiniPlayer onSeek={seek} onSkipBack={skipBackward} onSkipForward={skipForward} />
+        </div>
+      )}
       {isFullScreen && (
         <FullScreenPlayer onSeek={seek} onSkipBack={skipBackward} onSkipForward={skipForward} />
       )}

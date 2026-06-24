@@ -40,6 +40,9 @@ yarn-error.log*
 public/sw*
 public/swe-worker*
 
+# audio files (large binaries, served from R2 in production)
+/public/audio/
+
 # vercel
 .vercel
 
