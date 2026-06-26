@@ -5,13 +5,6 @@
     "nameEnglish": "Al-Fatiha",
     "audios": [
       {
-        "id": "minshawy-combined",
-        "title": "Combined Recitation (Unknown Surahs)",
-        "reciter": "El-Minshawy",
-        "audioUrl": "/audio/minshawy/combined-recitation.m4a",
-        "duration": 5698
-      },
-      {
         "id": "complete-quran-fast",
         "title": "Complete Quran (Fast Recitation)",
         "reciter": "Various",
@@ -80,7 +73,15 @@
     "id": 10,
     "nameArabic": "يونس",
     "nameEnglish": "Yunus",
-    "audios": []
+    "audios": [
+      {
+        "id": "al-minshawi-yunus",
+        "title": "Combined Recitation",
+        "reciter": "Al-Minshawi",
+        "audioUrl": "/audio/yunus/combined-recitation.m4a",
+        "duration": 5698
+      }
+    ]
   },
   {
     "id": 11,

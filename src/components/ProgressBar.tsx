@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useCallback, useEffect, type MouseEvent, type TouchEvent, type KeyboardEvent } from 'react';
+import { memo, useRef, useCallback, useEffect, useMemo, type MouseEvent, type TouchEvent, type KeyboardEvent } from 'react';
 import { usePlayerStore } from '@/stores/playerStore';
 import { formatTime } from '@/lib/utils';
 
@@ -8,16 +8,16 @@ type Props = {
   showMarkers?: boolean;
 };
 
-export function ProgressBar({ onSeek, showMarkers = true }: Props) {
+export const ProgressBar = memo(function ProgressBar({ onSeek, showMarkers = true }: Props) {
   const currentTime = usePlayerStore((s) => s.currentTime);
   const duration = usePlayerStore((s) => s.duration);
   const pointA = usePlayerStore((s) => s.pointA);
   const pointB = usePlayerStore((s) => s.pointB);
   const barRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
-  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
-  const aPct = duration > 0 && pointA !== null ? (pointA / duration) * 100 : 0;
-  const bPct = duration > 0 && pointB !== null ? (pointB / duration) * 100 : 0;
+  const progress = useMemo(() => duration > 0 ? (currentTime / duration) * 100 : 0, [currentTime, duration]);
+  const aPct = useMemo(() => duration > 0 && pointA !== null ? (pointA / duration) * 100 : 0, [duration, pointA]);
+  const bPct = useMemo(() => duration > 0 && pointB !== null ? (pointB / duration) * 100 : 0, [duration, pointB]);
 
   const calculateTime = useCallback((clientX: number) => {
     const bar = barRef.current;
@@ -128,4 +128,4 @@ export function ProgressBar({ onSeek, showMarkers = true }: Props) {
       </div>
     </div>
   );
-}
+});

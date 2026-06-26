@@ -1,5 +1,5 @@
 'use client';
-
+import { memo } from 'react';
 import { usePlayerStore } from '@/stores/playerStore';
 import { PlayIcon } from './icons/PlayIcon';
 import { PauseIcon } from './icons/PauseIcon';
@@ -13,7 +13,7 @@ type Props = {
   size?: 'sm' | 'lg';
 };
 
-export function TransportControls({ onSkipBack, onSkipForward, size = 'sm' }: Props) {
+export const TransportControls = memo(function TransportControls({ onSkipBack, onSkipForward, size = 'sm' }: Props) {
   const isPlaying = usePlayerStore((s) => s.isPlaying);
 
   const btnSize = size === 'lg' ? 'h-14 w-14' : 'h-10 w-10';
@@ -48,4 +48,4 @@ export function TransportControls({ onSkipBack, onSkipForward, size = 'sm' }: Pr
       </button>
     </div>
   );
-}
+});

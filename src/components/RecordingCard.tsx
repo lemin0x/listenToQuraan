@@ -1,5 +1,5 @@
 'use client';
-
+import { memo } from 'react';
 import type { AudioRecording } from '@/lib/types';
 import { formatTime } from '@/lib/utils';
 import { PlayIcon } from './icons/PlayIcon';
@@ -12,7 +12,7 @@ type Props = {
   surahName: string;
 };
 
-export function RecordingCard({ recording, surahId, surahName }: Props) {
+export const RecordingCard = memo(function RecordingCard({ recording, surahId, surahName }: Props) {
   const currentRecording = usePlayerStore((s) => s.currentRecording);
   const isPlaying = usePlayerStore((s) => s.isPlaying);
   const isLoading = usePlayerStore((s) => s.isLoading);
@@ -57,4 +57,4 @@ export function RecordingCard({ recording, surahId, surahName }: Props) {
       )}
     </button>
   );
-}
+});

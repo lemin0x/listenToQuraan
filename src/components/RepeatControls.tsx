@@ -1,10 +1,10 @@
 'use client';
-
+import { memo, useCallback } from 'react';
 import { usePlayerStore } from '@/stores/playerStore';
 import { RepeatIcon } from './icons/RepeatIcon';
 import { RepeatOneIcon } from './icons/RepeatOneIcon';
 
-export function RepeatControls() {
+export const RepeatControls = memo(function RepeatControls() {
   const pointA = usePlayerStore((s) => s.pointA);
   const pointB = usePlayerStore((s) => s.pointB);
   const repeatMode = usePlayerStore((s) => s.repeatMode);
@@ -12,10 +12,19 @@ export function RepeatControls() {
   const setPointB = usePlayerStore((s) => s.setPointB);
   const clearRepeat = usePlayerStore((s) => s.clearRepeat);
   const setRepeatMode = usePlayerStore((s) => s.setRepeatMode);
-  const currentTime = usePlayerStore((s) => s.currentTime);
 
   const hasAB = pointA !== null && pointB !== null;
   const isABActive = repeatMode === 'ab-repeat' && hasAB;
+
+  const handleSetA = useCallback(() => {
+    setPointA(usePlayerStore.getState().currentTime);
+  }, [setPointA]);
+
+  const handleSetB = useCallback(() => {
+    if (pointA !== null) {
+      setPointB(usePlayerStore.getState().currentTime);
+    }
+  }, [pointA, setPointB]);
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -33,7 +42,7 @@ export function RepeatControls() {
       </button>
 
       <button
-        onClick={() => setPointA(currentTime)}
+        onClick={handleSetA}
         className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
           pointA !== null
             ? 'bg-highlight text-base'
@@ -45,7 +54,7 @@ export function RepeatControls() {
       </button>
 
       <button
-        onClick={() => pointA !== null && setPointB(currentTime)}
+        onClick={handleSetB}
         disabled={pointA === null}
         className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
           pointB !== null
@@ -82,4 +91,4 @@ export function RepeatControls() {
       )}
     </div>
   );
-}
+});

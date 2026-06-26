@@ -20,7 +20,7 @@ const serwist = new Serwist({
   runtimeCaching: [
     ...defaultCache,
     {
-      matcher: /\/audio\/.*\.mp3$/,
+      matcher: /\/audio\/.*\.(mp3|m4a|mp4)$/,
       handler: new CacheFirst({
         cacheName: "audio-cache",
         plugins: [

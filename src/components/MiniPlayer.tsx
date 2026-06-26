@@ -1,9 +1,11 @@
 'use client';
-
+import { memo } from 'react';
 import { usePlayerStore } from '@/stores/playerStore';
 import { ProgressBar } from './ProgressBar';
 import { TransportControls } from './TransportControls';
 import { ExpandIcon } from './icons/ExpandIcon';
+import { PlayIcon } from './icons/PlayIcon';
+import { PauseIcon } from './icons/PauseIcon';
 import { togglePlayback } from '@/hooks/useAudioPlayer';
 
 type Props = {
@@ -12,7 +14,7 @@ type Props = {
   onSkipForward: () => void;
 };
 
-export function MiniPlayer({ onSeek, onSkipBack, onSkipForward }: Props) {
+export const MiniPlayer = memo(function MiniPlayer({ onSeek, onSkipBack, onSkipForward }: Props) {
   const currentRecording = usePlayerStore((s) => s.currentRecording);
   const isPlaying = usePlayerStore((s) => s.isPlaying);
   const toggleFullScreen = usePlayerStore((s) => s.toggleFullScreen);
@@ -62,15 +64,7 @@ export function MiniPlayer({ onSeek, onSkipBack, onSkipForward }: Props) {
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-white transition-colors hover:bg-accent-hover"
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
-          {isPlaying ? (
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-            </svg>
-          ) : (
-            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          )}
+          {isPlaying ? <PauseIcon className="h-4 w-4" /> : <PlayIcon className="h-4 w-4" />}
         </button>
 
         <button
@@ -83,4 +77,4 @@ export function MiniPlayer({ onSeek, onSkipBack, onSkipForward }: Props) {
       </div>
     </div>
   );
-}
+});

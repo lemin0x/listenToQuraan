@@ -48,29 +48,46 @@ export function playRecording(recording: AudioRecording, surahId: number, surahN
 
   if (current?.id === recording.id && current.audioUrl === recording.audioUrl) {
     store.setAutoplayBlocked(false);
-    store.togglePlay();
-    const p = audio.play();
-    if (p !== undefined) p.catch((err) => {
-      if (err.name === 'NotAllowedError') {
-        store.setAutoplayBlocked(true);
-      }
-    });
+    if (store.isPlaying) {
+      audio.pause();
+      store.pause();
+    } else {
+      store.togglePlay();
+      const p = audio.play();
+      if (p !== undefined) p.catch((err) => {
+        if (err.name === 'NotAllowedError') {
+          store.setAutoplayBlocked(true);
+        }
+      });
+    }
     return;
   }
 
   store.play(recording, surahId, surahName);
   const url = getAudioUrl(recording);
+
   if (url !== lastSrcRef) {
     audio.src = url;
     audio.load();
     lastSrcRef = url;
+  } else {
+    audio.currentTime = 0;
   }
-  const p = audio.play();
-  if (p !== undefined) p.catch((err) => {
-    if (err.name === 'NotAllowedError') {
-      store.setAutoplayBlocked(true);
-    }
-  });
+
+  function playWithGuard() {
+    const p = audio.play();
+    if (p !== undefined) p.catch((err) => {
+      if (err.name === 'NotAllowedError') {
+        usePlayerStore.getState().setAutoplayBlocked(true);
+      }
+    });
+  }
+
+  if (audio.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+    playWithGuard();
+  } else {
+    audio.addEventListener('canplay', playWithGuard, { once: true });
+  }
 }
 
 export function togglePlayback(): void {
@@ -197,7 +214,7 @@ export function useAudioPlayer() {
     seekingRef.current = true;
     audio.currentTime = time;
     setCurrentTime(time);
-    seekingRef.current = false;
+    queueMicrotask(() => { seekingRef.current = false; });
   }, [setCurrentTime]);
 
   const skipBackward = useCallback(() => {

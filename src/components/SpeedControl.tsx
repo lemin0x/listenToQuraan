@@ -1,10 +1,10 @@
 'use client';
-
+import { memo } from 'react';
 import { usePlayerStore } from '@/stores/playerStore';
 
 const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
-export function SpeedControl() {
+export const SpeedControl = memo(function SpeedControl() {
   const playbackRate = usePlayerStore((s) => s.playbackRate);
   const setPlaybackRate = usePlayerStore((s) => s.setPlaybackRate);
 
@@ -28,4 +28,4 @@ export function SpeedControl() {
       ))}
     </div>
   );
-}
+});
